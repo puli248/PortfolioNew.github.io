@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medhani Niwoda — Curated Living</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <span class="logo-mn">MN</span>
+      <div class="logo-text">
+        <span class="logo-main">Medhani Niwoda</span>
+        <span class="logo-sub">Curated Living</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="#" class="nav-link active" onclick="filterCat('all',this);return false;">All</a>
+      <a href="#" class="nav-link" onclick="filterCat('beauty',this);return false;">Beauty</a>
+      <a href="#" class="nav-link" onclick="filterCat('home',this);return false;">Home</a>
+      <a href="#" class="nav-link" onclick="filterCat('fashion',this);return false;">Fashion</a>
+      <a href="#" class="nav-link" onclick="filterCat('gourmet',this);return false;">Gourmet</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleSearch()">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="icon-btn" onclick="openCart()">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+      <button class="icon-btn" onclick="switchTheme()" id="dark-toggle">
+  🌙</button>
+    </div>
+  </div>
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="search-input" placeholder="Search products…" oninput="searchProducts()"/>
+    <button onclick="toggleSearch()">✕</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-slides" id="hero-slides">
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1800&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1800&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=1800&q=80')"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">New Collection · 2025</p>
+    <h1 class="hero-title">Live <em>Beautifully.</em><br>Shop Mindfully.</h1>
+    <p class="hero-desc">Discover curated essentials — beauty, home &amp; fashion — crafted for the modern soul.</p>
+    <button class="hero-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Collection ↓</button>
+  </div>
+  <div class="hero-dots" id="hero-dots">
+    <span class="dot active" onclick="goSlide(0)"></span>
+    <span class="dot" onclick="goSlide(1)"></span>
+    <span class="dot" onclick="goSlide(2)"></span>
+    <span class="dot" onclick="goSlide(3)"></span>
+  </div>
+</section>
+
+<section class="cat-strip">
+  <div class="cat-card" onclick="filterCat('beauty')">
+    <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=700&q=80" alt="Beauty" loading="lazy"/>
+    <div class="cat-overlay"></div>
+    <span class="cat-label">Beauty</span>
+  </div>
+  <div class="cat-card" onclick="filterCat('home')">
+    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80" alt="Home" loading="lazy"/>
+    <div class="cat-overlay"></div>
+    <span class="cat-label">Home</span>
+  </div>
+  <div class="cat-card" onclick="filterCat('fashion')">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80" alt="Fashion" loading="lazy"/>
+    <div class="cat-overlay"></div>
+    <span class="cat-label">Fashion</span>
+  </div>
+  <div class="cat-card" onclick="filterCat('gourmet')">
+    <img src="https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=700&q=80" alt="Gourmet" loading="lazy"/>
+    <div class="cat-overlay"></div>
+    <span class="cat-label">Gourmet</span>
+  </div>
+</section>
+
+<section class="products-section" id="products">
+  <div class="section-header">
+    <h2 class="section-title">Our Collection</h2>
+    <p class="section-label" id="filter-label">Showing all 10 products</p>
+  </div>
+  <div class="products-grid" id="products-grid"></div>
+  <p class="no-results" id="no-results">No products found.</p>
+</section>
+
+<div class="modal-overlay" id="product-modal" onclick="closeModalBg(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeProductModal()">✕</button>
+    <div class="modal-img-wrap">
+      <img id="modal-img" src="" alt="product"/>
+    </div>
+    <div class="modal-info">
+      <span class="modal-badge" id="modal-cat"></span>
+      <h2 class="modal-name" id="modal-name"></h2>
+      <p class="modal-desc-text" id="modal-desc"></p>
+      <div class="modal-meta">
+        <span class="modal-price" id="modal-price"></span>
+        <span class="modal-stock-txt" id="modal-stock"></span>
+      </div>
+      <div class="modal-qty-row">
+        <button class="qty-btn" onclick="changeModalQty(-1)">−</button>
+        <span id="modal-qty">1</span>
+        <button class="qty-btn" onclick="changeModalQty(1)">+</button>
+      </div>
+      <button class="modal-add-btn" id="modal-add-btn" onclick="addFromModal()">Add to Basket</button>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Basket</h3>
+    <button onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <p class="empty-msg">Your basket is empty.</p>
+  </div>
+  <div class="cart-footer" id="cart-footer">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <strong id="cart-total">£0.00</strong>
+    </div>
+    <button class="checkout-btn" onclick="goToCheckout()">Proceed to Checkout →</button>
+  </div>
+</aside>
+
+<div class="full-page" id="checkout-page">
+  <div class="checkout-wrap">
+    <button class="back-link" onclick="backToShop()">← Back to Shop</button>
+    <h2 class="page-title">Checkout</h2>
+    <div class="checkout-grid">
+      <div class="form-side">
+        <div class="form-section">
+          <h3>📦 Delivery Details</h3>
+          <div class="form-row">
+            <div class="form-group"><label>First Name *</label><input type="text" id="f-fn" placeholder="Medhani"/></div>
+            <div class="form-group"><label>Last Name *</label><input type="text" id="f-ln" placeholder="Niwoda"/></div>
+          </div>
+          <div class="form-group"><label>Email *</label><input type="email" id="f-email" placeholder="hello@example.com"/></div>
+          <div class="form-group"><label>Phone *</label><input type="tel" id="f-phone" placeholder="+44 7700 000000"/></div>
+          <div class="form-group"><label>Address *</label><input type="text" id="f-addr" placeholder="123 Blossom Lane"/></div>
+          <div class="form-row">
+            <div class="form-group"><label>City *</label><input type="text" id="f-city" placeholder="London"/></div>
+            <div class="form-group"><label>Postcode *</label><input type="text" id="f-post" placeholder="SW1A 1AA"/></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3>💳 Payment Details</h3>
+          <div class="form-group"><label>Name on Card *</label><input type="text" id="f-cn" placeholder="MEDHANI NIWODA"/></div>
+          <div class="form-group">
+            <label>Card Number *</label>
+            <input type="text" id="f-cnum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Expiry *</label><input type="text" id="f-exp" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"/></div>
+            <div class="form-group"><label>CVV *</label><input type="password" id="f-cvv" placeholder="•••" maxlength="3"/></div>
+          </div>
+        </div>
+        <button class="place-order-btn" onclick="placeOrder()">Place Order →</button>
+      </div>
+      <div class="summary-side">
+        <h3>Order Summary</h3>
+        <div id="summary-items"></div>
+        <hr class="sum-divider"/>
+        <div class="sum-row"><span>Subtotal</span><span id="sum-sub">£0.00</span></div>
+        <div class="sum-row"><span>Shipping</span><span class="free-tag">FREE</span></div>
+        <div class="sum-row grand-row"><span>Total</span><strong id="sum-grand">£0.00</strong></div>
+        <div class="secure-badge">🔒 Secure mock checkout</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-page" id="confirm-page">
+  <div class="confirm-wrap">
+    <div class="confirm-circle">✓</div>
+    <h2>Order Confirmed!</h2>
+    <p class="confirm-msg">Thank you, <strong id="conf-name"></strong>! Your order has been placed successfully.</p>
+    <p class="conf-ref">Order Reference: <strong id="conf-ref"></strong></p>
+    <div class="conf-items" id="conf-items"></div>
+    <button class="cont-btn" onclick="continueShopping()">Continue Shopping</button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-mn sm">MN</span>
+      <span class="footer-name">Medhani Niwoda</span>
+    </div>
+    <p class="footer-copy">© 2025 Medhani Niwoda · Curated Living · Mock ecommerce for academic purposes</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
